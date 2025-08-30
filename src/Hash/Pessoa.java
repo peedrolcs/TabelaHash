@@ -6,15 +6,15 @@ public class Pessoa {
     private int idade;
 
     public Pessoa() {
-        this.name = "";
-        this.CPF = "";
-        this.idade = 0;
+        this.name = name;
+        this.CPF = CPF;
+        this.idade = idade;
     }
 
     public Pessoa(String name, String CPF, int idade) {
-        this.name = "";
-        this.CPF = "";
-        this.idade = 0;
+        this.name = name;
+        this.CPF = CPF;
+        this.idade = idade;
     }
 
     public String getName() {
