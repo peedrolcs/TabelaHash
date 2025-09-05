@@ -2,80 +2,84 @@ package Hash;
 
 import java.util.Objects;
 
+import java.util.LinkedList;
+
 public class HashTable {
-    private Pessoa[] tabela;
+    private LinkedList<Pessoa>[] tabela;
     private int tamanho;
+    private int colissoes;
+    private int comparacoesBusca;
 
-    public HashTable(int tamanho){
+    public HashTable(int tamanho) {
         this.tamanho = tamanho;
-        tabela = new Pessoa[tamanho];
-    }
-
-    public int hash(String cpf){
-        return Math.abs(cpf.hashCode() % tamanho);
-    }
-
-    public void inserir(Pessoa p){
-        int pos = hash(p.getCpf());
-
-        while (tabela[pos] != null){
-            if (tabela[pos].getCpf().equals(p.getCpf())){
-                System.out.println("CPF, já cadastrado.");
-                return;
-            }
-            pos = (pos + 1) % tamanho;
+        tabela = new LinkedList[tamanho];
+        for (int i = 0; i < tamanho; i++) {
+            tabela[i] = new LinkedList<>();
         }
-        tabela[pos] = p;
+        colissoes = 0;
+        comparacoesBusca = 0;
+    }
+
+    private int hash(String cpf) {
+        return Math.abs(cpf.hashCode()) % tamanho;
+    }
+
+    public void inserir(Pessoa pessoa) {
+        int pos = hash(pessoa.getCpf());
+
+        if (pessoa.validacaoCPF() == false) {
+
+        } else {
+            for (Pessoa p : tabela[pos]) {
+                if (p.getCpf().equals(pessoa.getCpf())) {
+                    System.out.println("CPF já cadastrado, colisão à vista!");
+                }
+            }
+            if (!tabela[pos].isEmpty()) {
+                colissoes++;
+            }
+            tabela[pos].add(pessoa);
+            System.out.println("Cadastro realizado!");
+        }
 
     }
-    public Pessoa buscar(String cpf){
+
+    public Pessoa buscar(String cpf) {
+
+
+        long inicio = System.nanoTime();
         int pos = hash(cpf);
-        int start = pos;
-
-        while (tabela[pos] != null){
-            if (tabela[pos].getCpf().equals(cpf)){
-                return tabela[pos];
+        for (Pessoa p : tabela[pos]) {
+            comparacoesBusca++;
+            if (p.getCpf().equals(cpf)) {
+                long fim = System.nanoTime();
+                System.out.println("Tempo de busca: " + (fim - inicio) + " ns");
+                return p;
             }
-            pos = (pos + 1) % tamanho;
-            if (pos == start) break;
         }
+        long fim = System.nanoTime();
+        System.out.println("Tempo de busca: " + (fim - inicio) + " ns");
         return null;
     }
-    public void mostrar(){
-        for (Pessoa p : tabela){
-            if (p != null){
-                System.out.println(p);
-            }
-        }
-    }
 
-    public void excluir (String cpf){
+    public boolean remover(String cpf) {
         int pos = hash(cpf);
-        int start = pos;
+        return tabela[pos].removeIf(p -> p.getCpf().equals(cpf));
+    }
 
-        while (tabela[pos] != null){
-            if (tabela[pos].getCpf().equals(cpf)){
-                tabela[pos] = null;
-                System.out.println("Cadastro removido!");
-
-                reorganizar(pos);
-                return;
+    public void imprimirTabela() {
+        for (int i = 0; i < tamanho; i++) {
+            System.out.print("Posição " + i + ": ");
+            if (tabela[i].isEmpty()) {
+                System.out.println("vazio");
+            } else {
+                for (Pessoa p : tabela[i]) {
+                    System.out.print(p + " | ");
+                }
+                System.out.println();
             }
-            pos = (pos + 1) % tamanho;
-            if (pos == start) break;
         }
-        System.out.println("Cadastro não encotrado.");
+        System.out.println("Número de colisões: " + colissoes);
+        System.out.println("Total de comparações em buscas: " + comparacoesBusca);
     }
-
-    private void reorganizar(int posRemovido){
-        int pos = (posRemovido + 1) % tamanho;
-
-        while (tabela[pos] != null){
-            Pessoa p = tabela[pos];
-            tabela[pos] = null;
-            inserir(p);
-            pos = (pos + 1) % tamanho;
-        }
-    }
-
 }
