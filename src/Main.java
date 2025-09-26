@@ -11,13 +11,16 @@ public class Main {
         int opcao;
 
 
-        for (int i = 00; i < 30; i++) {
+       /* for (int i = 00; i < 30; i++) {
             String cpf = String.format("%011d", i);
             System.out.println("                ");
             System.out.println("CPF " + i + " de teste: " + cpf +".");
             tabela.inserir(new Pessoa(cpf, "Pessoa" + i, 20 + (i % 10)));
 
         }
+
+        */
+
 
         while (true) {
             System.out.println("\nMenu:");
