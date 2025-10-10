@@ -31,7 +31,7 @@ public class ArvoreBinariaNaoRecursiva {
         int op, achou, numero;
 
         do {
-            System.out.println("\nMENU DE OPÇÕES");
+            System.out.println("\n----------- MENU DE OPÇÕES -----------");
             System.out.println("1 - Inserir na árvore");
             System.out.println("2 - Consultar um nó da árvore");
             System.out.println("3 - Consultar toda a árvore em Ordem");
@@ -101,9 +101,9 @@ public class ArvoreBinariaNaoRecursiva {
                         }
                         // A verificação é feita fora do loop para não imprimir a mensagem várias vezes
                         if (achou == 1) {
-                            System.out.println("Número encontrado na árvore!");
+                            System.out.println("Número localizado na árvore!");
                         } else {
-                            System.out.println("Número não encontrado na árvore!");
+                            System.out.println("Número não localizado na árvore!");
                         }
                     }
                     break;
@@ -246,7 +246,7 @@ public class ArvoreBinariaNaoRecursiva {
                         }
 
                         if (achou == 0) {
-                            System.out.println("Número não encontrado para exclusão.");
+                            System.out.println("Número não localizado para exclusão.");
                         } else {
                             // 2. Lógica de remoção baseada nos filhos do nó
                             // Caso 1: Nó é uma folha (não tem filhos)
@@ -313,9 +313,9 @@ public class ArvoreBinariaNaoRecursiva {
                     System.out.println("Opção inválida!!");
                     break;
             }
-
         } while (op != 8);
+        entrada.close(); // Boa prática: fechar o Scanner ao final
+    }
+}
 
-        entrada.close(); // Boa prática: fechar o Scanner ao final
-}
-}
+
